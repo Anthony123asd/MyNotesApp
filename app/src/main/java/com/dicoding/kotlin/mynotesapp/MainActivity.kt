@@ -1,11 +1,15 @@
 package com.dicoding.kotlin.mynotesapp
 
 import android.content.Intent
+import android.database.ContentObserver
 import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.kotlin.mynotesapp.adapter.NoteAdapter
+import com.dicoding.kotlin.mynotesapp.db.DatabaseContract.NoteColumns.Companion.CONTENT_URI
 import com.dicoding.kotlin.mynotesapp.db.NoteHelper
 import com.dicoding.kotlin.mynotesapp.entity.Note
 import com.dicoding.kotlin.mynotesapp.helper.MappingHelper
@@ -18,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var adapter: NoteAdapter
-    private lateinit var noteHelper: NoteHelper
+//    private lateinit var noteHelper: NoteHelper
 
     companion object{
         private const val EXTRA_STATE = "EXTRA_STATE"
@@ -40,8 +44,20 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(intent, NoteAddUpdateActivity.REQUEST_ADD)
         }
 
-        noteHelper = NoteHelper.getInstance(applicationContext)
-        noteHelper.open()
+//        noteHelper = NoteHelper.getInstance(applicationContext)
+//        noteHelper.open()
+        val handlerThread = HandlerThread("DataObserver")
+        handlerThread.start()
+        val handler = Handler(handlerThread.looper)
+
+        val myObserver = object : ContentObserver(handler) {
+            override fun onChange(selfChange: Boolean) {
+                loadNotesAsync()
+            }
+        }
+
+        //memanggil content resolver
+        contentResolver.registerContentObserver(CONTENT_URI, true, myObserver)
 
         if (savedInstanceState == null) {
             loadNotesAsync()
@@ -57,7 +73,8 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.Main) {
             progressbar.visibility = View.VISIBLE
             val defferedNotes = async(Dispatchers.IO){
-                val cursor = noteHelper.queryAll()
+//                val cursor = noteHelper.queryAll()
+                val cursor = contentResolver?.query(CONTENT_URI, null, null, null, null)
                 MappingHelper.mapCursorToArrayList(cursor)
             }
             progressbar.visibility = View.INVISIBLE
@@ -109,7 +126,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        noteHelper.close()
+//        noteHelper.close()
     }
 
     private fun showSnackbarMessage(s: String) {
