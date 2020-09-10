@@ -2,17 +2,16 @@ package com.dicoding.kotlin.mynotesapp
 
 import android.content.ContentValues
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.kotlin.mynotesapp.db.DatabaseContract
 import com.dicoding.kotlin.mynotesapp.db.DatabaseContract.NoteColumns.Companion.CONTENT_URI
 import com.dicoding.kotlin.mynotesapp.db.DatabaseContract.NoteColumns.Companion.DATE
-import com.dicoding.kotlin.mynotesapp.db.NoteHelper
 import com.dicoding.kotlin.mynotesapp.entity.Note
 import com.dicoding.kotlin.mynotesapp.helper.MappingHelper
 import kotlinx.android.synthetic.main.activity_note_add_update.*
