@@ -211,7 +211,7 @@ class NoteAddUpdateActivity : AppCompatActivity() , View.OnClickListener{
                     contentResolver.delete(uriWithId, null, null)
                     Toast.makeText(
                             this@NoteAddUpdateActivity,
-                            "Gagal menghapus data",
+                            "Data terhapus",
                             Toast.LENGTH_SHORT
                         ).show()
                     finish()

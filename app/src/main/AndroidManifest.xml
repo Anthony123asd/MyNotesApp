@@ -20,8 +20,8 @@
             android:authorities="com.dicoding.kotlin.mynotesapp"
             android:enabled="true"
             android:exported="true"
-            android:readPermission="com.dicoding.mynotesapp.READ_DATABASE"
-            android:writePermission="com.dicoding.mynotesapp.WRITE_DATABASE"/>
+            android:readPermission="com.dicoding.kotlin.mynotesapp.READ_DATABASE"
+            android:writePermission="com.dicoding.kotlin.mynotesapp.WRITE_DATABASE"/>
         <activity android:name=".NoteAddUpdateActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
